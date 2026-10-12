@@ -21,7 +21,7 @@ export function registrationState(now = new Date()) {
       title: "Hari terakhir pendaftaran",
       days,
     } as const;
-  return { kind: "open", title: "Kesempatan untuk berkarya", days } as const;
+  return { kind: "open", title: "Pendaftaran dibuka", days } as const;
 }
 
 export function stageStatus(start: string, end: string, now = new Date()) {

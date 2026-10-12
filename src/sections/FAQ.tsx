@@ -9,18 +9,7 @@ export default function FAQ() {
     <section id="faq" className="section">
       <div className="container faq-grid">
         <div data-reveal>
-          <SectionHeading
-            label="PERTANYAAN UMUM"
-            title={
-              <>
-                Masih ada
-                <br />
-                <em>pertanyaan?</em>
-              </>
-            }
-          >
-            Temukan jawaban sebelum memulai perjalananmu.
-          </SectionHeading>
+          <SectionHeading title="Pertanyaan umum" />
         </div>
         <div className="faq-list" data-reveal>
           {faqs.map((faq, index) => {

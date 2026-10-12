@@ -96,8 +96,11 @@ section[tabindex="-1"]:focus:not(:focus-visible) {
   line-height: 1.2;
   letter-spacing: -0.045em;
   font-weight: 600;
-  margin-top: 20px;
+  margin-top: 0;
   text-wrap: balance;
+}
+.section-heading .eyebrow + h2 {
+  margin-top: 20px;
 }
 em {
   font-style: normal;
@@ -303,12 +306,6 @@ em {
   margin-top: 22px;
   display: flex;
 }
-.menu-caption {
-  font-size: 12px;
-  color: var(--ink-muted);
-  margin-top: 18px;
-  text-align: center;
-}
 .hero {
   padding-top: 28px;
 }
@@ -346,16 +343,12 @@ em {
   font-weight: 600;
   color: #103d35;
 }
-.hero-eyebrow {
-  font-size: 10px;
-  letter-spacing: 1.2px;
-}
 .hero h1 {
   font-size: clamp(38px, 10.6vw, 66px);
   line-height: 1.07;
   letter-spacing: -0.055em;
   font-weight: 650;
-  margin-top: 16px;
+  margin-top: 0;
 }
 .hero-edition {
   display: inline-block;
@@ -365,19 +358,21 @@ em {
   color: #88672e;
   vertical-align: baseline;
 }
-.hero-tagline {
-  font-size: clamp(15px, 2vw, 19px);
-  line-height: 1.6;
-  color: #61734f;
-  font-weight: 500;
-  margin-top: 20px;
-}
 .hero-theme {
   color: var(--ink-muted);
   font-size: 15px;
   line-height: 1.8;
   max-width: 48ch;
-  margin-top: 14px;
+  margin-top: 20px;
+}
+.theme-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #103d35;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 .hero-actions {
   display: flex;
@@ -893,12 +888,6 @@ em {
 }
 .registration-copy .button-outline:hover {
   background: #103d35;
-}
-.registration-date {
-  display: block;
-  margin-top: 25px;
-  font-size: 12px;
-  color: #c0cfc2;
 }
 .registration-ornament {
   position: absolute;
@@ -1498,9 +1487,6 @@ html[data-intro="done"] .hero [data-entrance="6"] {
   }
   .hero h1 {
     font-size: 74px;
-  }
-  .hero-eyebrow {
-    font-size: 11px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -45,16 +45,18 @@ export function SectionHeading({
   title,
   children,
 }: {
-  label: string;
+  label?: string;
   title: ReactNode;
   children?: ReactNode;
 }) {
   return (
     <div className="section-heading">
-      <p className="eyebrow">
-        <span />
-        {label}
-      </p>
+      {label && (
+        <p className="eyebrow">
+          <span />
+          {label}
+        </p>
+      )}
       <h2>{title}</h2>
       {children && <p className="section-description">{children}</p>}
     </div>

@@ -26,20 +26,13 @@ export default function Hero() {
               <strong>Universitas Hasanuddin</strong>
             </span>
           </div>
-          <p className="eyebrow hero-eyebrow" data-entrance="2">
-            <span />
-            FESTIVAL QUR'ANI · SKALA NASIONAL
-          </p>
           <h1 data-entrance="3">
             Hasanuddin
             <br />
             Qur'an Fest<span className="hero-edition">{event.year}</span>
           </h1>
-          <p className="hero-tagline" data-entrance="4">
-            Merawat nilai. Menumbuhkan peradaban.
-          </p>
           <p className="hero-theme" data-entrance="4">
-            “{event.theme}”
+            <span className="theme-label">Tema</span>“{event.theme}”
           </p>
           <div className="hero-actions" data-entrance="5">
             <ActionLink href={event.links.registration}>
@@ -56,15 +49,15 @@ export default function Hero() {
             </span>
             <span>
               <GraduationCap size={18} aria-hidden="true" />
-              Siswa & mahasiswa
+              Siswa & mahasiswa · 16–22 tahun
             </span>
           </div>
         </div>
         <div className="hero-visual" data-entrance="4">
           <Ornament className="hero-ornament" />
           <div className="visual-topline">
-            <span>IMAN. ILMU. KARYA.</span>
-            <span>HQF / {event.year}</span>
+            <span>HQF {event.year}</span>
+            <span>Universitas Hasanuddin</span>
           </div>
           <div className="logo-arch">
             <img
@@ -87,7 +80,7 @@ export default function Hero() {
       </div>
       <div className="container hero-bottom">
         <a href="#tentang">
-          Kenali HQF lebih dekat <ArrowDown size={16} aria-hidden="true" />
+          Tentang HQF <ArrowDown size={16} aria-hidden="true" />
         </a>
         <span>
           <Globe size={15} aria-hidden="true" />

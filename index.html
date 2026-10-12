@@ -12,7 +12,7 @@
     <meta property="og:locale" content="id_ID" />
     <meta
       property="og:title"
-      content="Hasanuddin Qur'an Fest 2026 | Iman. Ilmu. Karya."
+      content="Hasanuddin Qur'an Fest 2026 | Website Resmi HQF"
     />
     <meta
       property="og:description"
@@ -40,6 +40,7 @@
         display: block;
       }
       html[data-intro="pending"] #hqf-intro,
+      html[data-intro="presenting"] #hqf-intro,
       html[data-intro="leaving"] #hqf-intro {
         position: fixed;
         inset: 0;
@@ -50,39 +51,58 @@
         color: #f8f6f0;
         text-align: center;
         pointer-events: auto;
-        transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
       }
       html[data-intro="leaving"] #hqf-intro {
         opacity: 0;
         pointer-events: none;
       }
       .intro-content {
-        width: min(340px, calc(100% - 48px));
+        width: min(400px, calc(100% - 48px));
         font-family: "Plus Jakarta Sans", sans-serif;
       }
       .intro-logo {
-        width: 112px;
-        height: 140px;
+        width: clamp(144px, 24vw, 176px);
+        height: auto;
+        aspect-ratio: 4 / 5;
         object-fit: contain;
-        margin: 0 auto 28px;
-        border: 1px solid #c6a36040;
-        border-radius: 3px;
-        animation: intro-logo 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        margin: 0 auto 30px;
+        border: 1px solid #c6a36070;
+        border-radius: 4px;
+        opacity: 0;
       }
       .intro-title {
         margin: 0;
-        font-size: 14px;
+        font-size: clamp(16px, 2.4vw, 20px);
         font-weight: 600;
-        letter-spacing: 2px;
+        letter-spacing: 1.7px;
         line-height: 1.8;
-        animation: intro-logo 450ms 90ms both;
       }
       .intro-year {
         margin: 14px 0 0;
         color: #c6a360;
-        font-size: 18px;
-        letter-spacing: 8px;
-        animation: intro-logo 450ms 140ms both;
+        font-size: 22px;
+        letter-spacing: 6px;
+        text-indent: 6px;
+      }
+      html:is([data-intro="presenting"], [data-intro="leaving"]) .intro-logo {
+        animation: intro-logo 440ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      html:is([data-intro="presenting"], [data-intro="leaving"]) .intro-title {
+        animation: intro-copy 360ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      html:is([data-intro="presenting"], [data-intro="leaving"]) .intro-year {
+        animation: intro-copy 320ms 150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      @keyframes intro-copy {
+        from {
+          opacity: 0.55;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
       @keyframes intro-logo {
         from {
@@ -107,16 +127,18 @@
       (() => {
         let firstVisit = true;
         try {
-          firstVisit = sessionStorage.getItem("hqf-intro-2026") !== "seen";
-          sessionStorage.setItem("hqf-intro-2026", "seen");
+          firstVisit = sessionStorage.getItem("hqf-intro-2026-v2") !== "seen";
+          sessionStorage.setItem("hqf-intro-2026-v2", "seen");
         } catch {
           /* Storage may be blocked; the intro still has a strict fallback. */
         }
         const reduced = window.matchMedia?.(
           "(prefers-reduced-motion: reduce)",
         ).matches;
+        const replay =
+          new URLSearchParams(window.location.search).get("intro") === "1";
         document.documentElement.dataset.intro =
-          firstVisit && !reduced ? "pending" : "done";
+          (firstVisit || replay) && !reduced ? "pending" : "done";
       })();
     </script>
   </head>
@@ -131,8 +153,8 @@
         <img
           class="intro-logo"
           src="/src/assets/hqf.webp"
-          width="112"
-          height="140"
+          width="176"
+          height="220"
           alt="Logo resmi HQF"
           fetchpriority="high"
         />

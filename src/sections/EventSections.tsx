@@ -13,33 +13,16 @@ export function About() {
   return (
     <section id="tentang" className="section">
       <div className="container about-grid" data-reveal>
-        <SectionHeading
-          label="TENTANG HQF"
-          title={
-            <>
-              Dari nilai Qur'ani,
-              <br />
-              untuk generasi
-              <br />
-              <em>yang berarti.</em>
-            </>
-          }
-        />
+        <SectionHeading title="Tentang HQF 2026" />
         <div className="about-copy">
           <p className="lead">
-            Sebuah ruang untuk bertumbuh, berkarya, dan menghidupkan nilai
-            Al-Qur'an.
+            Hasanuddin Qur'an Fest (HQF) 2026 merupakan kegiatan perlombaan
+            Al-Qur'an yang diselenggarakan oleh {event.organizer}.
           </p>
           <p>
-            Hasanuddin Qur'an Fest (HQF) 2026 diselenggarakan oleh{" "}
-            {event.organizer}. Kegiatan ini mempertemukan siswa dan mahasiswa
-            dari seluruh Indonesia melalui seni, hafalan, dan pemaknaan
-            Al-Qur'an.
-          </p>
-          <p>
-            Dengan semangat membumikan nilai Qur'ani dan menumbuhkan jiwa
-            intelektual, HQF mengajak generasi muda mengambil bagian dalam
-            membangun peradaban mulia.
+            Cabang yang diperlombakan adalah MTQ, MHQ 10 Juz, dan MSQ. Kegiatan
+            ini terbuka bagi siswa dan mahasiswa seluruh Indonesia yang berusia
+            16–22 tahun.
           </p>
           <div className="about-facts">
             <div>
@@ -66,21 +49,7 @@ export function Competitions() {
     <section id="lomba" className="section competition-section">
       <div className="container">
         <div className="heading-row" data-reveal>
-          <SectionHeading
-            label="CABANG LOMBA"
-            title={
-              <>
-                Tiga jalan.
-                <br />
-                <em>Satu semangat Qur'ani.</em>
-              </>
-            }
-          />
-          <p>
-            Pilih ruang terbaik untuk potensimu.
-            <br />
-            Bawa semangat, hadirkan karya.
-          </p>
+          <SectionHeading title="Cabang lomba" />
         </div>
         <div className="competition-grid">
           {competitions.map((competition, index) => {
@@ -139,16 +108,7 @@ export function Schedule() {
     <section id="jadwal" className="section">
       <div className="container">
         <div className="heading-row" data-reveal>
-          <SectionHeading
-            label="LINIMASA KEGIATAN"
-            title={
-              <>
-                Catat tanggalnya.
-                <br />
-                <em>Siapkan langkahmu.</em>
-              </>
-            }
-          />
+          <SectionHeading title="Jadwal kegiatan" />
           <span className="year-label">OKTOBER — NOVEMBER 2026</span>
         </div>
         <ol className="timeline">
@@ -172,7 +132,6 @@ export function Schedule() {
                 <time dateTime={step.start}>{step.date}</time>
               </p>
               <h3>{step.title}</h3>
-              <p>{step.description}</p>
               <span className="stage-status">
                 {statusLabels[stageStatus(step.start, step.end, now)]}
               </span>
@@ -192,19 +151,10 @@ export function Information() {
     <section id="informasi" className="section information-section">
       <div className="container information-grid" data-reveal>
         <div>
-          <SectionHeading
-            label="INFORMASI PESERTA"
-            title={
-              <>
-                Langkah kecilmu,
-                <br />
-                <em>awal karya besar.</em>
-              </>
-            }
-          />
+          <SectionHeading title="Persyaratan peserta" />
           <p className="info-intro">
-            Terbuka untuk siswa dan mahasiswa seluruh Indonesia. Kenali
-            persyaratannya, lalu siapkan dirimu.
+            Peserta dari seluruh Indonesia dapat mengikuti lomba dengan
+            ketentuan berikut.
           </p>
           <ul className="requirements">
             <li>
@@ -246,7 +196,7 @@ export function Information() {
             formulir serta pedoman resmi.
           </p>
           <ActionLink secondary href={event.links.guide}>
-            Pelajari pedoman
+            Baca pedoman
           </ActionLink>
         </div>
       </div>
@@ -258,17 +208,8 @@ export function Registration() {
     <section id="daftar" className="registration-section">
       <Ornament className="registration-ornament" />
       <div className="container registration-copy" data-reveal>
-        <p className="eyebrow">GILIRANMU UNTUK MENGAMBIL BAGIAN</p>
-        <h2>
-          Hadir dengan niat.
-          <br />
-          <span>Pulang dengan makna.</span>
-        </h2>
-        <p>
-          Jadilah bagian dari Hasanuddin Qur'an Fest 2026.
-          <br />
-          Mulai perjalanan Qur'animu bersama kami.
-        </p>
+        <h2>Pendaftaran HQF {event.year}</h2>
+        <p>Pendaftaran dan pengumpulan video: {event.registration.label}.</p>
         <div className="hero-actions">
           <ActionLink href={event.links.registration}>
             Daftar sekarang
@@ -277,9 +218,6 @@ export function Registration() {
             Baca pedoman
           </ActionLink>
         </div>
-        <span className="registration-date">
-          Pendaftaran · {event.registration.label}
-        </span>
       </div>
     </section>
   );

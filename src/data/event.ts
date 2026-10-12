@@ -47,7 +47,7 @@ export const competitions = [
   {
     code: "MTQ",
     title: "Musabaqah Tilawatil Qur'an",
-    description: "Lantunkan ayat suci Al-Qur'an melalui keindahan tilawah.",
+    description: "Lomba tilawah Al-Qur'an untuk peserta individu.",
     category: "Individu",
     detail: "Seni membaca Al-Qur’an",
     icon: "mic",
@@ -55,7 +55,7 @@ export const competitions = [
   {
     code: "MHQ",
     title: "Musabaqah Hifzhil Qur'an",
-    description: "Tunjukkan hafalan Al-Qur'an dalam cabang MHQ 10 Juz.",
+    description: "Lomba hafalan Al-Qur'an kategori 10 juz.",
     category: "Individu",
     detail: "Pilihan juz 1–10 atau 21–30",
     icon: "book",
@@ -63,9 +63,10 @@ export const competitions = [
   {
     code: "MSQ",
     title: "Musabaqah Syarhil Qur'an",
-    description: "Sampaikan pesan dan nilai Al-Qur'an bersama tim terbaikmu.",
+    description:
+      "Lomba syarhil Al-Qur'an yang diikuti regu beranggotakan 3 orang.",
     category: "Beregu · 3 orang",
-    detail: "Kolaborasi dalam syarhil Qur’an",
+    detail: "3 orang per regu",
     icon: "users",
   },
 ] as const;
@@ -73,35 +74,30 @@ export const timeline = [
   {
     date: "11 Okt–7 Nov",
     title: "Pendaftaran & video",
-    description: "Daftarkan diri dan kumpulkan video perlombaan.",
     start: "2026-10-11",
     end: "2026-11-07",
   },
   {
     date: "8–10 Nov",
     title: "Penilaian",
-    description: "Proses penilaian karya peserta.",
     start: "2026-11-08",
     end: "2026-11-10",
   },
   {
     date: "11 Nov",
     title: "Pengumuman finalis",
-    description: "Pengumuman peserta yang lolos ke babak final.",
     start: "2026-11-11",
     end: "2026-11-11",
   },
   {
     date: "12 Nov",
     title: "Technical Meeting",
-    description: "Pertemuan teknis sebagai persiapan babak final.",
     start: "2026-11-12",
     end: "2026-11-12",
   },
   {
     date: "15 Nov",
     title: "Final online",
-    description: "Babak final dilaksanakan secara daring.",
     start: "2026-11-15",
     end: "2026-11-15",
   },
@@ -123,7 +119,7 @@ export const faqs = [
   },
   {
     question: "Kapan batas pendaftaran dan pengumpulan video?",
-    answer: `Pendaftaran dan pengumpulan video berlangsung pada ${event.registration.label}. Jam penutupan belum diumumkan. Silakan konfirmasi kepada panitia dan jangan menunda pengumpulan hingga hari terakhir.`,
+    answer: `Pendaftaran dan pengumpulan video berlangsung pada ${event.registration.label}. Untuk jam penutupan, konfirmasikan kepada panitia.`,
   },
   {
     question: "Apakah babak final dilaksanakan secara online?",

@@ -32,9 +32,9 @@ Verifikasi batas tanggal WITA dan tautan kontak: `npm test`.
 
 ## UI dan motion
 
-- Hero menampilkan nama event sebagai heading utama; tagline dan tema resmi tetap hadir.
+- Hero menampilkan nama event dan tema resmi. Copy halaman menggunakan judul dan informasi kegiatan langsung, tanpa tagline tambahan atau slogan buatan.
 - Layout mobile-first menggunakan breakpoint 360, 600, 768, 1024, dan 1280 px; container maksimal 1180 px. Teks utama 15–16 px dan tombol minimal 52 px.
-- Intro branded muncul sekali per sesi melalui `sessionStorage` (`hqf-intro-2026`). Animasi keluar dimulai segera setelah React dan logo utama siap, tanpa durasi minimum. Watchdog independen menghapus overlay setelah maksimal 1,9 detik jika pemuatan gagal. Intro dilewati saat reduced motion aktif.
+- Intro branded muncul sekali per sesi melalui `sessionStorage` (`hqf-intro-2026-v2`). Setelah React dan logo siap, animasi masuk diselesaikan (maksimal 470 ms) sebelum fade-out 420 ms, tanpa jeda diam tambahan. Watchdog independen menghapus overlay setelah maksimal 1,9 detik jika pemuatan gagal. Intro dilewati saat reduced motion aktif. Tambahkan `?intro=1` pada URL untuk melihat ulang intro tanpa menghapus storage.
 - Font Google dimuat tanpa menghalangi konten awal. Logo, judul, dan informasi sederhana tetap tersedia ketika JavaScript gagal atau dinonaktifkan.
 - Scroll reveal satu kali, entrance hero bertahap, feedback hover/tap, menu dengan fokus keyboard dan Escape, serta accordion dengan ARIA state. Semua motion mengikuti `prefers-reduced-motion`.
 - Countdown menampilkan status hari terakhir/pendaftaran berakhir; indikator timeline menggunakan hari kalender WITA, tanpa mengasumsikan jam penutupan.

@@ -186,9 +186,6 @@ export default function Navbar() {
               Daftar sekarang
               <ArrowUpRight size={18} aria-hidden="true" />
             </ExternalLink>
-            <p className="menu-caption">
-              Iman. Ilmu. Karya. · HQF {event.year}
-            </p>
           </nav>
         </div>
       </div>

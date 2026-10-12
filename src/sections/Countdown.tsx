@@ -52,12 +52,12 @@ export default function Countdown() {
         <div className="countdown-note">
           <p>
             {closed
-              ? "Terima kasih atas partisipasimu. Lihat jadwal tahap berikutnya atau hubungi panitia."
-              : "Jam penutupan belum diumumkan. Siapkan dan kirim videomu lebih awal."}
+              ? "Lihat jadwal kegiatan atau hubungi panitia untuk informasi lebih lanjut."
+              : "Jam penutupan belum diumumkan. Hubungi panitia untuk memastikan batas waktu pengiriman."}
           </p>
           {closed ? (
             <a href="#jadwal">
-              Lihat linimasa kegiatan{" "}
+              Lihat jadwal kegiatan{" "}
               <ArrowUpRight size={18} aria-hidden="true" />
             </a>
           ) : (

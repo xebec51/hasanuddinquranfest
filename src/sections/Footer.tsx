@@ -7,17 +7,8 @@ export default function Footer() {
     <>
       <section id="kontak" className="section contact-section">
         <div className="container contact-grid" data-reveal>
-          <SectionHeading
-            label="MARI TERHUBUNG"
-            title={
-              <>
-                Kami siap
-                <br />
-                <em>membantumu.</em>
-              </>
-            }
-          >
-            Hubungi panitia untuk informasi dan pertanyaan seputar HQF 2026.
+          <SectionHeading title="Kontak panitia">
+            Untuk informasi lebih lanjut, hubungi panitia melalui WhatsApp.
           </SectionHeading>
           <div className="contact-list">
             {event.contacts.map((contact) => (
@@ -85,7 +76,6 @@ export default function Footer() {
           </div>
           <div className="footer-bottom">
             <p>© {event.year} Hasanuddin Qur'an Fest.</p>
-            <span>Iman. Ilmu. Karya.</span>
             <a href="#beranda">
               Kembali ke atas <ArrowUp size={15} aria-hidden="true" />
             </a>

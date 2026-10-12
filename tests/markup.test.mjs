@@ -27,6 +27,27 @@ test("rendered navigation, accordion relationships, and external links stay vali
     assert.equal((html.match(/id="faq-answer-\d+"/g) ?? []).length, 6);
     assert.equal((html.match(/<h1[\s>]/g) ?? []).length, 1);
     assert.match(html, /Hasanuddin[\s\S]*Qur&#x27;an Fest/);
+    assert.match(
+      html,
+      /Membumikan Nilai Qur&#x27;ani, Menumbuhkan Jiwa Intelektual, Membangun Peradaban Mulia/,
+    );
+    assert.doesNotMatch(
+      html,
+      /Merawat nilai|Iman\. Ilmu\. Karya|Tiga jalan|Catat tanggalnya|Langkah kecilmu|Hadir dengan niat|Pulang dengan makna|perjalanan Qur|Bawa semangat|Kami siap|yang berarti/i,
+    );
+    for (const title of [
+      "Tentang HQF 2026",
+      "Cabang lomba",
+      "Jadwal kegiatan",
+      "Persyaratan peserta",
+      "Pertanyaan umum",
+      "Kontak panitia",
+    ]) {
+      assert.ok(
+        html.includes(title),
+        `Missing factual section heading: ${title}`,
+      );
+    }
     assert.match(html, /https:\/\/forms\.gle\/FnJdV3HPni5MUwqJA/);
     assert.match(html, /1P7u-2Wwhr4NrrHgCJooaUvcAxYdNnEHI/);
     assert.match(html, /https:\/\/wa.me\/6282348353632/);

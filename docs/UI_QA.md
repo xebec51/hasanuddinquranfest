@@ -4,7 +4,7 @@
 
 - `npm run typecheck`: TypeScript aplikasi dan konfigurasi.
 - `npm run lint`: ESLint, React Hooks, dan Fast Refresh.
-- `npm test`: 11 tes untuk kalender WITA, status pendaftaran/timeline, bootstrap splash, reload per sesi, reduced motion, storage diblokir, timeout, anchor navigasi, ID unik, relasi accordion ARIA, dimensi/alt logo, dan tautan resmi.
+- `npm test`: 17 tes untuk kalender WITA, status pendaftaran/timeline, bootstrap splash, urutan entrance/exit, reload per sesi, replay, reduced motion, storage diblokir, timeout, anchor navigasi, ID unik, relasi accordion ARIA, dimensi/alt logo, tema resmi, copy informatif, dan tautan resmi.
 - `npm run build`: output statis dengan aset relatif untuk GitHub Pages.
 - Pemeriksaan HTTP lokal terhadap dokumen dan aset output produksi.
 
@@ -17,7 +17,7 @@ Browser automation tidak terhubung dalam sesi implementasi ini. Belum ada screen
 Jalankan `npm run dev` dan buka URL lokal yang dicetak Vite. Periksa:
 
 1. Nama event dan tema terbaca; seluruh logo proporsional tanpa cropping; tidak ada horizontal overflow.
-2. Intro pertama muncul, lalu overlay hilang; reload pada tab yang sama tidak mengulangnya. Gunakan tab/sesi baru atau hapus hanya key `hqf-intro-2026` untuk mengulang pengujian.
+2. Intro pertama menampilkan logo secara penuh sebelum fade-out; reload pada tab yang sama tidak mengulangnya. Tambahkan `?intro=1` pada URL untuk melihat ulang. Alternatif: gunakan tab/sesi baru atau hapus hanya key `hqf-intro-2026-v2`.
 3. Preferensi reduced motion menampilkan konten langsung. Simulasikan koneksi lambat/error aplikasi untuk memastikan watchdog dan informasi fallback tetap bekerja.
 4. Menu seluler: buka/tutup, Escape, Tab/Shift+Tab, klik backdrop, pindah section, dan resize ke desktop.
 5. FAQ: buka semua pertanyaan secara bergantian, tutup kembali, dan gunakan Enter/Space dari keyboard.
@@ -27,4 +27,4 @@ Jalankan `npm run dev` dan buka URL lokal yang dicetak Vite. Periksa:
 
 ## Integritas deployment
 
-Workflow `.github/workflows/deploy.yml`, `vite.config.ts` dengan `base: "./"`, data resmi `src/data/event.ts`, dan logo sumber asli tidak diubah oleh polishing. Custom domain tetap dikelola melalui pengaturan GitHub Pages yang sudah ada.
+Workflow `.github/workflows/deploy.yml`, `vite.config.ts` dengan `base: "./"`, dan logo sumber asli tetap dipertahankan. Copy deskriptif telah dirapikan; tema, tanggal, persyaratan, biaya, narahubung, dan tautan resmi tidak berubah. Custom domain tetap dikelola melalui pengaturan GitHub Pages yang sudah ada.
