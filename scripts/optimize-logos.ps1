@@ -1,4 +1,4 @@
-# Generate smaller, visually unchanged PNG copies; originals are never overwritten.
+# Generate web-sized derivatives; originals are never overwritten.
 Add-Type -AssemblyName System.Drawing
 $projectDirectory = Split-Path -Parent $PSScriptRoot
 $assetDirectory = Join-Path $projectDirectory 'src/assets'
@@ -22,3 +22,9 @@ foreach ($variant in $variants) {
     } finally { $graphics.Dispose(); $resizedImage.Dispose() }
   } finally { $sourceImage.Dispose() }
 }
+
+# Temporary CLI only: no sharp dependency is added to the website or build.
+& npm.cmd exec --yes --package=sharp-cli -- sharp -i (Join-Path $assetDirectory 'hqf.png') -o (Join-Path $assetDirectory 'hqf.webp') -f webp -q 92 --effort 6
+if ($LASTEXITCODE -ne 0) { throw 'HQF WebP generation failed' }
+& npm.cmd exec --yes --package=sharp-cli -- sharp -i (Join-Path $assetDirectory 'hqf.png') -o (Join-Path $assetDirectory 'hqf-icon.png') -f png resize 64
+if ($LASTEXITCODE -ne 0) { throw 'HQF favicon generation failed' }

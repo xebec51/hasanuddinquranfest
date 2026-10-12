@@ -7,17 +7,17 @@ export default function Hero() {
     <section id="beranda" className="hero">
       <div className="container hero-grid">
         <div className="hero-copy">
-          <div className="organizer-lockup">
+          <div className="organizer-lockup" data-entrance="1">
             <img
               src={logos.unhas}
-              width="45"
-              height="52"
+              width="48"
+              height="58"
               alt="Logo resmi Universitas Hasanuddin"
             />
             <img
               src={logos.psq}
-              width="57"
-              height="57"
+              width="64"
+              height="64"
               alt="Logo resmi UKM PSQ Unhas"
             />
             <span>
@@ -26,20 +26,22 @@ export default function Hero() {
               <strong>Universitas Hasanuddin</strong>
             </span>
           </div>
-          <p className="eyebrow hero-eyebrow">
+          <p className="eyebrow hero-eyebrow" data-entrance="2">
             <span />
-            {event.name.toUpperCase()} · {event.year}
+            FESTIVAL QUR'ANI · SKALA NASIONAL
           </p>
-          <h1>
-            <span className="sr-only">
-              {event.name} {event.year}.{" "}
-            </span>
-            Merawat nilai.
+          <h1 data-entrance="3">
+            Hasanuddin
             <br />
-            Menumbuhkan <span>peradaban.</span>
+            Qur'an Fest<span className="hero-edition">{event.year}</span>
           </h1>
-          <p className="hero-theme">“{event.theme}”</p>
-          <div className="hero-actions">
+          <p className="hero-tagline" data-entrance="4">
+            Merawat nilai. Menumbuhkan peradaban.
+          </p>
+          <p className="hero-theme" data-entrance="4">
+            “{event.theme}”
+          </p>
+          <div className="hero-actions" data-entrance="5">
             <ActionLink href={event.links.registration}>
               Daftar sekarang
             </ActionLink>
@@ -47,7 +49,7 @@ export default function Hero() {
               Baca pedoman
             </ActionLink>
           </div>
-          <div className="hero-details">
+          <div className="hero-details" data-entrance="6">
             <span>
               <CalendarDays size={17} aria-hidden="true" />
               {event.registration.shortLabel}
@@ -58,11 +60,11 @@ export default function Hero() {
             </span>
           </div>
         </div>
-        <div className="hero-visual">
+        <div className="hero-visual" data-entrance="4">
           <Ornament className="hero-ornament" />
           <div className="visual-topline">
             <span>IMAN. ILMU. KARYA.</span>
-            <span>01 / HQF</span>
+            <span>HQF / {event.year}</span>
           </div>
           <div className="logo-arch">
             <img

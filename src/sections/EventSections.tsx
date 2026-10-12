@@ -1,5 +1,8 @@
 import { ArrowUpRight, BookOpen, Check, Mic, Users } from "lucide-react";
+import type { CSSProperties } from "react";
 import { competitions, event, rupiah, timeline } from "../data/event";
+import { stageStatus } from "../data/calendar";
+import { useCalendarClock } from "../hooks/useCalendarClock";
 import {
   ActionLink,
   ExternalLink,
@@ -87,6 +90,7 @@ export function Competitions() {
                 key={competition.code}
                 className="competition"
                 data-reveal
+                style={{ "--reveal-delay": `${index * 65}ms` } as CSSProperties}
               >
                 <div className="competition-top">
                   <Icon size={28} strokeWidth={1.4} aria-hidden="true" />
@@ -103,7 +107,10 @@ export function Competitions() {
                   href={event.links.guide}
                   className="competition-detail"
                 >
-                  <span>{competition.detail}</span>
+                  <span>
+                    {competition.detail}
+                    <small>Lihat ketentuan lomba</small>
+                  </span>
                   <ArrowUpRight size={18} aria-hidden="true" />
                 </ExternalLink>
               </article>
@@ -122,10 +129,16 @@ export function Competitions() {
   );
 }
 export function Schedule() {
+  const now = useCalendarClock();
+  const statusLabels = {
+    upcoming: "Akan datang",
+    active: "Sedang berlangsung",
+    complete: "Tahap telah berakhir",
+  };
   return (
     <section id="jadwal" className="section">
-      <div className="container" data-reveal>
-        <div className="heading-row">
+      <div className="container">
+        <div className="heading-row" data-reveal>
           <SectionHeading
             label="LINIMASA KEGIATAN"
             title={
@@ -140,15 +153,29 @@ export function Schedule() {
         </div>
         <ol className="timeline">
           {timeline.map((step, index) => (
-            <li key={step.title}>
+            <li
+              key={step.title}
+              data-status={stageStatus(step.start, step.end, now)}
+              data-reveal
+              style={{ "--reveal-delay": `${index * 55}ms` } as CSSProperties}
+            >
               <div className="step-line">
-                <span className="step-number">0{index + 1}</span>
+                <span className="step-number">
+                  {stageStatus(step.start, step.end, now) === "complete" ? (
+                    <Check size={16} aria-hidden="true" />
+                  ) : (
+                    `0${index + 1}`
+                  )}
+                </span>
               </div>
               <p className="step-date">
                 <time dateTime={step.start}>{step.date}</time>
               </p>
               <h3>{step.title}</h3>
               <p>{step.description}</p>
+              <span className="stage-status">
+                {statusLabels[stageStatus(step.start, step.end, now)]}
+              </span>
             </li>
           ))}
         </ol>

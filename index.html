@@ -19,27 +19,174 @@
       content="Membumikan Nilai Qur'ani, Menumbuhkan Jiwa Intelektual, Membangun Peradaban Mulia. Daftar MTQ, MHQ 10 Juz, dan MSQ pada 11 Oktober–7 November 2026."
     />
     <meta name="twitter:card" content="summary" />
-    <link rel="icon" type="image/png" href="/src/assets/hqf.png" />
+    <link rel="icon" type="image/png" href="/src/assets/hqf-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;650;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media = 'all'"
     />
     <title>Hasanuddin Qur'an Fest 2026 | Website Resmi HQF</title>
+    <style>
+      #hqf-intro {
+        display: none;
+      }
+      .app-fallback {
+        display: none;
+      }
+      #root:empty + .app-fallback {
+        display: block;
+      }
+      html[data-intro="pending"] #hqf-intro,
+      html[data-intro="leaving"] #hqf-intro {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: grid;
+        place-items: center;
+        background: #092b25;
+        color: #f8f6f0;
+        text-align: center;
+        pointer-events: auto;
+        transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      html[data-intro="leaving"] #hqf-intro {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .intro-content {
+        width: min(340px, calc(100% - 48px));
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      .intro-logo {
+        width: 112px;
+        height: 140px;
+        object-fit: contain;
+        margin: 0 auto 28px;
+        border: 1px solid #c6a36040;
+        border-radius: 3px;
+        animation: intro-logo 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .intro-title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        line-height: 1.8;
+        animation: intro-logo 450ms 90ms both;
+      }
+      .intro-year {
+        margin: 14px 0 0;
+        color: #c6a360;
+        font-size: 18px;
+        letter-spacing: 8px;
+        animation: intro-logo 450ms 140ms both;
+      }
+      @keyframes intro-logo {
+        from {
+          opacity: 0;
+          transform: translateY(6px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #hqf-intro {
+          display: none !important;
+        }
+      }
+      html:has(:focus-visible) #hqf-intro {
+        display: none;
+      }
+    </style>
+    <script>
+      (() => {
+        let firstVisit = true;
+        try {
+          firstVisit = sessionStorage.getItem("hqf-intro-2026") !== "seen";
+          sessionStorage.setItem("hqf-intro-2026", "seen");
+        } catch {
+          /* Storage may be blocked; the intro still has a strict fallback. */
+        }
+        const reduced = window.matchMedia?.(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        document.documentElement.dataset.intro =
+          firstVisit && !reduced ? "pending" : "done";
+      })();
+    </script>
   </head>
   <body>
-    <div id="root"></div>
-    <noscript
-      >Hasanuddin Qur'an Fest 2026 — UKM Pengembangan Seni Al-Qur'an Universitas
-      Hasanuddin. Lomba MTQ, MHQ 10 Juz, dan MSQ untuk siswa dan mahasiswa usia
-      16–22 tahun. Pendaftaran: 11 Oktober–7 November 2026.
-      <a href="https://forms.gle/FnJdV3HPni5MUwqJA">Daftar</a> ·
-      <a
-        href="https://drive.google.com/file/d/1P7u-2Wwhr4NrrHgCJooaUvcAxYdNnEHI/view?usp=drivesdk"
-        >Pedoman</a
-      >.</noscript
+    <div
+      id="hqf-intro"
+      role="status"
+      aria-live="polite"
+      aria-label="Membuka Hasanuddin Qur'an Fest 2026"
     >
+      <div class="intro-content">
+        <img
+          class="intro-logo"
+          src="/src/assets/hqf.webp"
+          width="112"
+          height="140"
+          alt="Logo resmi HQF"
+          fetchpriority="high"
+        />
+        <p class="intro-title">HASANUDDIN QUR'AN FEST</p>
+        <p class="intro-year">2026</p>
+      </div>
+    </div>
+    <script>
+      // Covers slow/failed application loading, storage errors, and image decode failure.
+      // The document and noscript content never depend on this overlay.
+      if (document.documentElement.dataset.intro === "pending") {
+        window.setTimeout(() => {
+          const intro = document.getElementById("hqf-intro");
+          if (intro) {
+            intro.remove();
+            document.documentElement.dataset.intro = "done";
+          }
+        }, 1900);
+      } else document.getElementById("hqf-intro")?.remove();
+    </script>
+    <div id="root"></div>
+    <div
+      class="app-fallback"
+      style="
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 48px 24px;
+        color: #103d35;
+        font-family: sans-serif;
+        line-height: 1.8;
+      "
+    >
+      <img
+        src="/src/assets/hqf.webp"
+        width="112"
+        height="140"
+        alt="Logo resmi HQF"
+        style="object-fit: contain; margin-bottom: 20px"
+      />
+      <h2>Hasanuddin Qur'an Fest 2026</h2>
+      <p>UKM Pengembangan Seni Al-Qur'an Universitas Hasanuddin.</p>
+      <p>
+        Lomba MTQ, MHQ 10 Juz, dan MSQ untuk siswa dan mahasiswa usia 16–22
+        tahun. Pendaftaran: 11 Oktober–7 November 2026.
+      </p>
+      <p>
+        <a href="https://forms.gle/FnJdV3HPni5MUwqJA">Buka pendaftaran resmi</a>
+        ·
+        <a
+          href="https://drive.google.com/file/d/1P7u-2Wwhr4NrrHgCJooaUvcAxYdNnEHI/view?usp=drivesdk"
+          >Baca pedoman</a
+        >
+      </p>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
