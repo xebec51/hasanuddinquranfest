@@ -6,12 +6,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -b --pretty false",
+    "preview": "vite preview",
+    "test": "node --experimental-strip-types --test tests/event.test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "Hasanuddin Qur'an Fest 2026 website foundation",
+  "description": "Official Hasanuddin Qur'an Fest 2026 event website",
   "dependencies": {
     "lucide-react": "^1.55.0",
     "react": "^19.3.0",
