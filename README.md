@@ -30,7 +30,25 @@ Logo resmi di root tetap dipertahankan. Salinan PNG berukuran web di `src/assets
 
 Verifikasi batas tanggal WITA dan tautan kontak: `npm test`.
 
-## Cloudflare Pages
+## GitHub Pages (hosting utama)
+
+Website di-deploy otomatis melalui GitHub Actions setiap push ke `main`.
+
+1. Di repository, buka **Settings → Pages → Build and deployment → Source: GitHub Actions** (aktifkan sekali saja).
+2. Buka tab **Actions** untuk memantau workflow `Deploy HQF to GitHub Pages`. Bila diperlukan jalankan melalui tombol **Run workflow**.
+3. Setelah deployment sukses, buka: https://xebec51.github.io/hasanuddinquranfest/
+
+Workflow menjalankan `npm ci`, typecheck, lint, test, dan build dengan Node.js 24 lalu mengunggah folder `dist` ke GitHub Pages. `vite.config.ts` menggunakan `base: "./"` agar URL aset bekerja di alamat project GitHub Pages dan di domain mandiri.
+
+### Menghubungkan domain .tech
+
+- Di **Settings → Pages → Custom domain**, isi `hasanuddinquranfest.tech` dan simpan.
+- Pada registrar domain .TECH, pasang empat record A untuk apex/root `@` menuju IPv4 GitHub Pages: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, dan `185.199.111.153`. Hapus record A/AAAA yang berkonflik jika ada, jangan menghapus record MX email.
+- Opsional: subdomain `www` berupa CNAME ke `xebec51.github.io` (tanpa nama repository), bila ingin memakai `www`.
+- Tunggu verifikasi DNS, kemudian aktifkan **Enforce HTTPS** di GitHub Pages jika sudah tersedia.
+- Jangan menambahkan file `CNAME` untuk workflow GitHub Actions ini; custom domain dikonfigurasi melalui pengaturan GitHub Pages.
+
+## Cloudflare Pages (alternatif)
 
 - Hubungkan repository GitHub `xebec51/hasanuddinquranfest`.
 - Production branch: `main`.
