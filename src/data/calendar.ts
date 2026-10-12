@@ -9,7 +9,7 @@ export function registrationState(now = new Date()) {
       title: "Pendaftaran segera dibuka",
       days,
     } as const;
-  if (days < 0)
+  if (now.getTime() >= Date.parse(event.registration.deadline))
     return {
       kind: "closed",
       title: "Periode pendaftaran telah berakhir",

@@ -1,31 +1,33 @@
 import { ArrowUp, ArrowUpRight, Camera, MessageCircle } from "lucide-react";
 import { event } from "../data/event";
-import { logos } from "../assets/logos";
+import { footerLogos } from "../assets/logos";
 import { ExternalLink, SectionHeading } from "../components/UI";
 export default function Footer() {
   return (
     <>
       <section id="kontak" className="section contact-section">
-        <div className="container contact-grid" data-reveal>
+        <div className="container contact-grid">
           <SectionHeading title="Kontak panitia">
             Untuk informasi lebih lanjut, hubungi panitia melalui WhatsApp.
           </SectionHeading>
           <div className="contact-list">
             {event.contacts.map((contact) => (
-              <ExternalLink
-                key={contact.phone}
-                href={contact.whatsapp}
-                className="contact-link"
-              >
-                <MessageCircle size={24} strokeWidth={1.5} aria-hidden="true" />
-                <span>
-                  <strong>{contact.name}</strong>
-                  <span>{contact.phone} · WhatsApp</span>
-                </span>
-                <ArrowUpRight size={20} aria-hidden="true" />
-              </ExternalLink>
+              <div key={contact.phone} data-reveal="up">
+                <ExternalLink href={contact.whatsapp} className="contact-link">
+                  <MessageCircle
+                    size={24}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
+                  <span>
+                    <strong>{contact.name}</strong>
+                    <span>{contact.phone} · WhatsApp</span>
+                  </span>
+                  <ArrowUpRight size={20} aria-hidden="true" />
+                </ExternalLink>
+              </div>
             ))}
-            <div className="social-links">
+            <div className="social-links" data-reveal="up">
               <Camera size={20} aria-hidden="true" />
               <div>
                 {event.social.map((social) => (
@@ -41,7 +43,7 @@ export default function Footer() {
       </section>
       <footer className="footer">
         <div className="container">
-          <div className="footer-main">
+          <div className="footer-main" data-reveal="up">
             <div>
               <a className="footer-brand" href="#beranda">
                 Hasanuddin
@@ -52,23 +54,23 @@ export default function Footer() {
             </div>
             <div className="footer-logos">
               <img
-                src={logos.unhas}
+                src={footerLogos.unhas}
                 width="44"
                 height="52"
                 loading="lazy"
                 alt="Logo resmi Universitas Hasanuddin"
               />
               <img
-                src={logos.psq}
-                width="58"
-                height="58"
+                src={footerLogos.psq}
+                width="118"
+                height="118"
                 loading="lazy"
                 alt="Logo resmi UKM PSQ Unhas"
               />
               <img
-                src={logos.hqf}
-                width="46"
-                height="58"
+                src={footerLogos.hqf}
+                width="62"
+                height="78"
                 loading="lazy"
                 alt="Logo resmi HQF"
               />

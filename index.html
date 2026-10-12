@@ -125,20 +125,11 @@
     </style>
     <script>
       (() => {
-        let firstVisit = true;
-        try {
-          firstVisit = sessionStorage.getItem("hqf-intro-2026-v2") !== "seen";
-          sessionStorage.setItem("hqf-intro-2026-v2", "seen");
-        } catch {
-          /* Storage may be blocked; the intro still has a strict fallback. */
-        }
         const reduced = window.matchMedia?.(
           "(prefers-reduced-motion: reduce)",
         ).matches;
-        const replay =
-          new URLSearchParams(window.location.search).get("intro") === "1";
-        document.documentElement.dataset.intro =
-          (firstVisit || replay) && !reduced ? "pending" : "done";
+        // Every document load gets an intro; anchor navigation does not reload it.
+        document.documentElement.dataset.intro = reduced ? "done" : "pending";
       })();
     </script>
   </head>
@@ -163,7 +154,7 @@
       </div>
     </div>
     <script>
-      // Covers slow/failed application loading, storage errors, and image decode failure.
+      // Covers slow/failed application loading and image decode failure.
       // The document and noscript content never depend on this overlay.
       if (document.documentElement.dataset.intro === "pending") {
         window.setTimeout(() => {
@@ -198,7 +189,8 @@
       <p>UKM Pengembangan Seni Al-Qur'an Universitas Hasanuddin.</p>
       <p>
         Lomba MTQ, MHQ 10 Juz, dan MSQ untuk siswa dan mahasiswa usia 16–22
-        tahun. Pendaftaran: 11 Oktober–7 November 2026.
+        tahun. Pendaftaran: 11 Oktober–7 November 2026, ditutup pukul 23.59
+        WITA.
       </p>
       <p>
         <a href="https://forms.gle/FnJdV3HPni5MUwqJA">Buka pendaftaran resmi</a>

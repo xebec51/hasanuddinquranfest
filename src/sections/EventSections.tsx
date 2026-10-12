@@ -1,6 +1,20 @@
-import { ArrowUpRight, BookOpen, Check, Mic, Users } from "lucide-react";
-import type { CSSProperties } from "react";
-import { competitions, event, rupiah, timeline } from "../data/event";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  BookOpen,
+  Check,
+  Mic,
+  Users,
+} from "lucide-react";
+import { useRef, useState, type CSSProperties } from "react";
+import {
+  competitions,
+  event,
+  requirements,
+  rupiah,
+  timeline,
+} from "../data/event";
 import { stageStatus } from "../data/calendar";
 import { useCalendarClock } from "../hooks/useCalendarClock";
 import {
@@ -12,9 +26,9 @@ import {
 export function About() {
   return (
     <section id="tentang" className="section">
-      <div className="container about-grid" data-reveal>
+      <div className="container about-grid">
         <SectionHeading title="Tentang HQF 2026" />
-        <div className="about-copy">
+        <div className="about-copy" data-reveal="up">
           <p className="lead">
             Hasanuddin Qur'an Fest (HQF) 2026 merupakan kegiatan perlombaan
             Al-Qur'an yang diselenggarakan oleh {event.organizer}.
@@ -44,21 +58,78 @@ export function About() {
   );
 }
 export function Competitions() {
+  const rail = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState(0);
+  const move = (direction: number) => {
+    const track = rail.current;
+    if (!track) return;
+    const card = track.firstElementChild;
+    const distance =
+      (card?.getBoundingClientRect().width ?? track.clientWidth) + 16;
+    track.scrollBy({
+      left: direction * distance,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  };
   const icons = { mic: Mic, book: BookOpen, users: Users };
   return (
     <section id="lomba" className="section competition-section">
       <div className="container">
-        <div className="heading-row" data-reveal>
+        <div className="heading-row">
           <SectionHeading title="Cabang lomba" />
         </div>
-        <div className="competition-grid">
+        <div className="competition-controls">
+          <span>Geser untuk melihat cabang lomba</span>
+          <div>
+            <button
+              type="button"
+              aria-label="Cabang lomba sebelumnya"
+              aria-controls="competition-list"
+              disabled={position === 0}
+              onClick={() => move(-1)}
+            >
+              <ArrowLeft size={18} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              aria-label="Cabang lomba berikutnya"
+              aria-controls="competition-list"
+              disabled={position === competitions.length - 1}
+              onClick={() => move(1)}
+            >
+              <ArrowRight size={18} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+        <div
+          className="competition-grid"
+          id="competition-list"
+          ref={rail}
+          role="region"
+          aria-label="Cabang lomba HQF 2026"
+          tabIndex={0}
+          onScroll={() => {
+            const track = rail.current;
+            if (!track) return;
+            const maximum = track.scrollWidth - track.clientWidth;
+            setPosition(
+              maximum > 0
+                ? Math.round(
+                    (track.scrollLeft / maximum) * (competitions.length - 1),
+                  )
+                : 0,
+            );
+          }}
+        >
           {competitions.map((competition, index) => {
             const Icon = icons[competition.icon];
             return (
               <article
                 key={competition.code}
                 className="competition"
-                data-reveal
+                data-reveal="card"
                 style={{ "--reveal-delay": `${index * 65}ms` } as CSSProperties}
               >
                 <div className="competition-top">
@@ -107,7 +178,7 @@ export function Schedule() {
   return (
     <section id="jadwal" className="section">
       <div className="container">
-        <div className="heading-row" data-reveal>
+        <div className="heading-row">
           <SectionHeading title="Jadwal kegiatan" />
           <span className="year-label">OKTOBER — NOVEMBER 2026</span>
         </div>
@@ -116,7 +187,7 @@ export function Schedule() {
             <li
               key={step.title}
               data-status={stageStatus(step.start, step.end, now)}
-              data-reveal
+              data-reveal="step"
               style={{ "--reveal-delay": `${index * 55}ms` } as CSSProperties}
             >
               <div className="step-line">
@@ -149,33 +220,23 @@ export function Schedule() {
 export function Information() {
   return (
     <section id="informasi" className="section information-section">
-      <div className="container information-grid" data-reveal>
+      <div className="container information-grid">
         <div>
           <SectionHeading title="Persyaratan peserta" />
-          <p className="info-intro">
+          <p className="info-intro" data-reveal="up">
             Peserta dari seluruh Indonesia dapat mengikuti lomba dengan
             ketentuan berikut.
           </p>
-          <ul className="requirements">
-            <li>
-              <Check size={18} aria-hidden="true" />
-              Siswa atau mahasiswa
-            </li>
-            <li>
-              <Check size={18} aria-hidden="true" />
-              Berusia 16–22 tahun
-            </li>
-            <li>
-              <Check size={18} aria-hidden="true" />
-              MSQ: tim beranggotakan 3 orang
-            </li>
-            <li>
-              <Check size={18} aria-hidden="true" />
-              Mengikuti ketentuan dalam pedoman resmi
-            </li>
+          <ul className="requirements" data-reveal="up">
+            {requirements.map((requirement) => (
+              <li key={requirement}>
+                <Check size={18} aria-hidden="true" />
+                <span>{requirement}</span>
+              </li>
+            ))}
           </ul>
         </div>
-        <div className="fees">
+        <div className="fees" data-reveal="card">
           <p className="eyebrow">BIAYA PENDAFTARAN</p>
           <div className="fee-row">
             <div>
@@ -207,10 +268,14 @@ export function Registration() {
   return (
     <section id="daftar" className="registration-section">
       <Ornament className="registration-ornament" />
-      <div className="container registration-copy" data-reveal>
-        <h2>Pendaftaran HQF {event.year}</h2>
-        <p>Pendaftaran dan pengumpulan video: {event.registration.label}.</p>
-        <div className="hero-actions">
+      <div className="container registration-copy">
+        <h2 data-reveal="heading">Pendaftaran HQF {event.year}</h2>
+        <p data-reveal="up">
+          Pendaftaran dan pengumpulan video: {event.registration.label}.<br />
+          Batas akhir: {event.registration.endLabel}, pukul{" "}
+          {event.registration.closingTime}.
+        </p>
+        <div className="hero-actions" data-reveal="up">
           <ActionLink href={event.links.registration}>
             Daftar sekarang
           </ActionLink>

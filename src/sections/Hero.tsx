@@ -7,25 +7,9 @@ export default function Hero() {
     <section id="beranda" className="hero">
       <div className="container hero-grid">
         <div className="hero-copy">
-          <div className="organizer-lockup" data-entrance="1">
-            <img
-              src={logos.unhas}
-              width="48"
-              height="58"
-              alt="Logo resmi Universitas Hasanuddin"
-            />
-            <img
-              src={logos.psq}
-              width="64"
-              height="64"
-              alt="Logo resmi UKM PSQ Unhas"
-            />
-            <span>
-              UKM PSQ
-              <br />
-              <strong>Universitas Hasanuddin</strong>
-            </span>
-          </div>
+          <p className="eyebrow hero-eyebrow" data-entrance="2">
+            <span /> FESTIVAL QUR'ANI · SKALA NASIONAL
+          </p>
           <h1 data-entrance="3">
             Hasanuddin
             <br />

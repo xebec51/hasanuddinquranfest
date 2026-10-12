@@ -15,7 +15,9 @@ export default function Countdown() {
         <div>
           <p className="eyebrow">PENDAFTARAN HQF {event.year}</p>
           <h2>{state.title}</h2>
-          <p>{event.registration.endLabel} · Kalender WITA</p>
+          <p>
+            {event.registration.endLabel} · {event.registration.closingTime}
+          </p>
         </div>
         <div
           className={`countdown-number ${closed || lastDay ? "countdown-status" : ""}`}
@@ -53,7 +55,7 @@ export default function Countdown() {
           <p>
             {closed
               ? "Lihat jadwal kegiatan atau hubungi panitia untuk informasi lebih lanjut."
-              : "Jam penutupan belum diumumkan. Hubungi panitia untuk memastikan batas waktu pengiriman."}
+              : `Pendaftaran dan pengumpulan video ditutup pada ${event.registration.endLabel}, pukul ${event.registration.closingTime}.`}
           </p>
           {closed ? (
             <a href="#jadwal">

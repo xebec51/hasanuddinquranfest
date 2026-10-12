@@ -24,9 +24,13 @@ Preview build produksi biasanya http://localhost:4173.
 
 ## Konten dan aset
 
-`src/data/event.ts` menyimpan informasi event, jadwal, biaya, kontak, FAQ, dan tautan resmi. Countdown menghitung selisih hari kalender WITA (Asia/Makassar) menuju 7 November 2026. Tidak ada jam penutupan yang diasumsikan; pada tanggal tersebut ditampilkan hari terakhir, dan setelahnya periode berakhir.
+`src/data/event.ts` menyimpan informasi event, jadwal, biaya, kontak, persyaratan, FAQ, dan tautan resmi. Countdown menghitung selisih hari kalender WITA (Asia/Makassar) menuju 7 November 2026. Jam penutupan dikonfirmasi pemilik website: **7 November 2026, pukul 23.59 WITA**. Status berubah menjadi berakhir pada batas waktu tersebut, termasuk bila halaman tetap terbuka.
 
 Logo resmi di root tetap dipertahankan. Salinan berukuran web di `src/assets` digunakan melalui `src/assets/logos.ts`; HQF menggunakan WebP sekitar 40 KB dan favicon PNG terpisah sekitar 11 KB. Regenerasi salinan pada Windows: `powershell -File scripts/optimize-logos.ps1`. Sharp CLI hanya digunakan sementara untuk menghasilkan aset, bukan sebagai dependency aplikasi/build. Tidak ada backend, database, authentication, atau sponsor tambahan.
+
+Footer memakai versi transparan PSQ dan HQF khusus footer, tanpa kotak putih. Logo Unhas sudah transparan. Logo penyelenggara di atas headline hero dihapus sesuai arahan; seluruh logo tetap tersedia di footer. Catatan aset turunan dan prompt: `docs/FOOTER_ASSETS.md`.
+
+Persyaratan dan 14 FAQ dirangkum dari `Pedoman_HQF_2026_Paling Terbaru.pdf` yang diberikan pengguna. Tautan pendaftaran tetap `FnJdV3HPni5MUwqJA` sesuai konfirmasi pengguna, meskipun dokumen mencantumkan tautan lain. Tidak ada tambahan tahap semifinal, nominal hadiah, atau jam dari asumsi.
 
 Verifikasi batas tanggal WITA dan tautan kontak: `npm test`.
 
@@ -34,12 +38,13 @@ Verifikasi batas tanggal WITA dan tautan kontak: `npm test`.
 
 - Hero menampilkan nama event dan tema resmi. Copy halaman menggunakan judul dan informasi kegiatan langsung, tanpa tagline tambahan atau slogan buatan.
 - Layout mobile-first menggunakan breakpoint 360, 600, 768, 1024, dan 1280 px; container maksimal 1180 px. Teks utama 15–16 px dan tombol minimal 52 px.
-- Intro branded muncul sekali per sesi melalui `sessionStorage` (`hqf-intro-2026-v2`). Setelah React dan logo siap, animasi masuk diselesaikan (maksimal 470 ms) sebelum fade-out 420 ms, tanpa jeda diam tambahan. Watchdog independen menghapus overlay setelah maksimal 1,9 detik jika pemuatan gagal. Intro dilewati saat reduced motion aktif. Tambahkan `?intro=1` pada URL untuk melihat ulang intro tanpa menghapus storage.
+- Intro branded muncul setiap halaman dibuka atau di-refresh, sesuai arahan terbaru pengguna, tanpa bergantung pada sessionStorage. Navigasi anchor antarseksi tidak mengulang intro. Setelah React dan logo siap, entrance selesai (maksimal 470 ms) sebelum fade-out 420 ms, tanpa jeda diam tambahan. Watchdog independen menghapus overlay setelah maksimal 1,9 detik jika pemuatan gagal. Intro dilewati saat reduced motion aktif.
 - Font Google dimuat tanpa menghalangi konten awal. Logo, judul, dan informasi sederhana tetap tersedia ketika JavaScript gagal atau dinonaktifkan.
-- Scroll reveal satu kali, entrance hero bertahap, feedback hover/tap, menu dengan fokus keyboard dan Escape, serta accordion dengan ARIA state. Semua motion mengikuti `prefers-reduced-motion`.
-- Countdown menampilkan status hari terakhir/pendaftaran berakhir; indikator timeline menggunakan hari kalender WITA, tanpa mengasumsikan jam penutupan.
+- Scroll reveal memakai IntersectionObserver: hanya elemen di luar viewport yang disiapkan, lalu masuk sekali dengan fade-up, reveal heading, stagger kartu, dan garis timeline bertahap. Durasi 500–600 ms; stagger dibatasi 140 ms. Tanpa API atau saat reduced motion, konten langsung terlihat. Fokus keyboard membuka konten tersembunyi; cleanup aman untuk React StrictMode.
+- Cabang lomba tersusun horizontal: deretan scroll-snap dan tombol panah pada mobile/tablet, tiga kolom mulai 1024 px. Area geser terisolasi agar halaman tidak mengalami horizontal overflow.
+- Countdown dan indikator timeline tetap menggunakan hari kalender WITA. Status penutupan menggunakan jam yang telah dikonfirmasi.
 
-`npm test` memverifikasi batas tanggal, bootstrap splash (kunjungan awal, reload, reduced motion, storage diblokir), watchdog, markup navigasi, relasi ARIA, dan tautan resmi. Pengujian ini bukan pengganti visual QA di browser. Catatan pemeriksaan: `docs/UI_QA.md`.
+`npm test` memverifikasi batas tanggal/jam, bootstrap splash setiap reload, reduced motion, watchdog, state scroll reveal, markup navigasi, relasi ARIA, dan tautan resmi. Pengujian ini bukan pengganti visual QA di browser. Catatan pemeriksaan dan skrip Playwright terpisah: `docs/UI_QA.md`.
 
 ## GitHub Pages (hosting utama)
 

@@ -55,10 +55,14 @@ function visit({
   return { storage, dataset, timers, isRemoved: () => removed };
 }
 
-test("the first session visit shows the branded shell with a bounded watchdog", () => {
+test("every document load shows the branded shell with a bounded watchdog", () => {
   const first = visit();
   assert.equal(first.dataset.intro, "pending");
-  assert.equal(first.storage.get("hqf-intro-2026-v2"), "seen");
+  assert.equal(
+    first.storage.size,
+    0,
+    "Splash must not write a session skip flag",
+  );
   assert.equal(first.timers.length, 1);
   assert.ok(first.timers[0].delay <= 2000);
   first.timers[0].callback();
@@ -66,14 +70,14 @@ test("the first session visit shows the branded shell with a bounded watchdog", 
   assert.equal(first.isRemoved(), true);
 });
 
-test("reload in the same session removes the splash immediately", () => {
+test("reload shows the splash even when a legacy session flag exists", () => {
   const reload = visit({ seen: true });
-  assert.equal(reload.dataset.intro, "done");
-  assert.equal(reload.isRemoved(), true);
-  assert.equal(reload.timers.length, 0);
+  assert.equal(reload.dataset.intro, "pending");
+  assert.equal(reload.isRemoved(), false);
+  assert.equal(reload.timers.length, 1);
 });
 
-test("the explicit replay link shows the intro again without bypassing reduced motion", () => {
+test("legacy replay links remain usable without bypassing reduced motion", () => {
   assert.equal(visit({ seen: true, replay: true }).dataset.intro, "pending");
   assert.equal(
     visit({ seen: true, replay: true, reduced: true }).dataset.intro,

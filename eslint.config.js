@@ -8,6 +8,11 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    files: ["scripts/*.mjs"],
+    // QA scripts run in Node and evaluate callbacks in the browser.
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
+  {
     files: ["**/*.{ts,tsx}"],
     languageOptions: { globals: { ...globals.browser, ...globals.es2022 } },
     plugins: { "react-hooks": reactHooks, "react-refresh": reactRefresh },

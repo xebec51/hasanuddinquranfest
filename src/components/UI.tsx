@@ -50,7 +50,7 @@ export function SectionHeading({
   children?: ReactNode;
 }) {
   return (
-    <div className="section-heading">
+    <div className="section-heading" data-reveal="heading">
       {label && (
         <p className="eyebrow">
           <span />

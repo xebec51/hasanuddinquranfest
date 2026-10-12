@@ -11,6 +11,7 @@ test("rendered navigation, accordion relationships, and external links stay vali
   });
   try {
     const { default: App } = await server.ssrLoadModule("/src/App.tsx");
+    const { faqs } = await server.ssrLoadModule("/src/data/event.ts");
     const html = renderToStaticMarkup(createElement(App));
     const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
     assert.equal(new Set(ids).size, ids.length, "IDs must be unique");
@@ -23,8 +24,27 @@ test("rendered navigation, accordion relationships, and external links stay vali
         `Missing controlled region: ${match[1]}`,
       );
     }
-    assert.equal((html.match(/id="faq-question-\d+"/g) ?? []).length, 6);
-    assert.equal((html.match(/id="faq-answer-\d+"/g) ?? []).length, 6);
+    assert.equal(
+      (html.match(/id="faq-question-\d+"/g) ?? []).length,
+      faqs.length,
+    );
+    assert.equal(
+      (html.match(/id="faq-answer-\d+"/g) ?? []).length,
+      faqs.length,
+    );
+    assert.match(html, /23\.59 WITA/);
+    assert.doesNotMatch(html, /Jam penutupan belum diumumkan|organizer-lockup/);
+    assert.doesNotMatch(html, /DEirmCbSBGThmrhp8/);
+    const hero = html.match(/<section id="beranda"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(hero);
+    assert.doesNotMatch(
+      hero,
+      /Logo resmi Universitas Hasanuddin|Logo resmi UKM PSQ/,
+    );
+    assert.match(hero, /Logo resmi Hasanuddin Qur&#x27;an Fest 2026/);
+    for (const type of ["heading", "card", "step", "up"]) {
+      assert.ok(html.includes(`data-reveal="${type}"`));
+    }
     assert.equal((html.match(/<h1[\s>]/g) ?? []).length, 1);
     assert.match(html, /Hasanuddin[\s\S]*Qur&#x27;an Fest/);
     assert.match(
