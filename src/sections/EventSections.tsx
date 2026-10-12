@@ -147,10 +147,7 @@ export function Competitions() {
                   href={event.links.guide}
                   className="competition-detail"
                 >
-                  <span>
-                    {competition.detail}
-                    <small>Lihat ketentuan lomba</small>
-                  </span>
+                  <span>Lihat ketentuan lomba</span>
                   <ArrowUpRight size={18} aria-hidden="true" />
                 </ExternalLink>
               </article>

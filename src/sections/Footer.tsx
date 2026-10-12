@@ -1,6 +1,6 @@
 import { ArrowUp, ArrowUpRight, Camera, MessageCircle } from "lucide-react";
 import { event } from "../data/event";
-import { footerLogos } from "../assets/logos";
+import { transparentLogos } from "../assets/logos";
 import { ExternalLink, SectionHeading } from "../components/UI";
 export default function Footer() {
   return (
@@ -54,21 +54,21 @@ export default function Footer() {
             </div>
             <div className="footer-logos">
               <img
-                src={footerLogos.unhas}
+                src={transparentLogos.unhas}
                 width="44"
                 height="52"
                 loading="lazy"
                 alt="Logo resmi Universitas Hasanuddin"
               />
               <img
-                src={footerLogos.psq}
-                width="118"
-                height="118"
+                src={transparentLogos.psq}
+                width="76"
+                height="76"
                 loading="lazy"
                 alt="Logo resmi UKM PSQ Unhas"
               />
               <img
-                src={footerLogos.hqf}
+                src={transparentLogos.hqf}
                 width="62"
                 height="78"
                 loading="lazy"

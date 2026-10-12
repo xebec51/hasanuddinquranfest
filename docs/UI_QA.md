@@ -4,7 +4,7 @@
 
 - `npm run typecheck`: TypeScript aplikasi dan konfigurasi.
 - `npm run lint`: ESLint, React Hooks, dan Fast Refresh.
-- `npm test`: 26 tes untuk kalender WITA, penutupan 23.59 WITA, status timeline, bootstrap splash setiap reload, urutan entrance/exit, reduced motion, storage diblokir, timeout, state scroll reveal, cleanup StrictMode, fallback API, fokus keyboard, ketentuan pedoman, anchor navigasi, ID unik, relasi accordion ARIA, dimensi/alt logo, tema resmi, copy informatif, dan tautan resmi.
+- `npm test`: 28 tes untuk kalender WITA, penutupan 23.59 WITA, status timeline, bootstrap splash setiap reload, urutan entrance/exit, reduced motion, storage diblokir, timeout, scroll reveal berulang, buffer anti-flicker, cleanup StrictMode, fallback API, fokus keyboard, ketentuan pedoman, anchor navigasi, ID unik, relasi accordion ARIA, dimensi/alt logo, tema resmi, copy informatif, dan tautan resmi.
 - `npm run build`: output statis dengan aset relatif untuk GitHub Pages.
 - Pemeriksaan HTTP lokal terhadap dokumen dan aset output produksi.
 
@@ -16,16 +16,18 @@ Browser terintegrasi tidak terhubung. Setelah pengguna mengizinkan pengunduhan, 
 
 Skrip `scripts/visual-qa.mjs` dijalankan terhadap build produksi pada `http://localhost:4173/`. Hasil Chromium:
 
-- Lebar 320, 360, 375, 390, 430, 768, 1024, 1280, dan 1440 px: `document.scrollWidth` sama dengan lebar viewport; tidak ada horizontal overflow halaman, gambar gagal, atau konten non-kartu tertinggal tersembunyi setelah scroll.
+- Lebar 320, 360, 375, 390, 430, 768, 1024, 1280, dan 1440 px: `document.scrollWidth` sama dengan lebar viewport; tidak ada horizontal overflow halaman, gambar gagal, atau konten di dalam viewport tertinggal tersembunyi setelah scroll. Konten di luar layar direset untuk entrance berikutnya.
 - Nama event terlihat di viewport pertama pada seluruh ukuran tersebut.
 - Splash tampil pada kunjungan awal dan refresh tab yang sama; logo masuk sebelum fade-out; overlay dihapus. Reduced motion melewati splash, termasuk setelah refresh.
 - Kartu masuk saat section mendekati viewport; rail mobile maju/mundur melalui tombol panah. Bug kartu menyusut pada iterasi pertama ditemukan melalui browser dan diperbaiki.
+- Reveal diulang pada perjalanan ke footer dan kembali ke section lomba sebanyak dua kali, dengan pemeriksaan transisi opacity CSS yang benar-benar berjalan. Elemen yang masih terlihat atau memiliki fokus keyboard tidak direset.
+- Link kartu lomba hanya menampilkan “Lihat ketentuan lomba”, tanpa baris detail tambahan. PSQ footer berukuran 76 × 76 px; navbar dan splash memakai HQF transparan, tanpa bingkai kotak pada splash.
 - Emulasi layar sentuh berhasil menggeser deretan lomba melalui swipe; fallback tanpa JavaScript menampilkan informasi resmi dan tautan pendaftaran tanpa splash yang menghalangi.
 - Hamburger membuka menu, Escape mengembalikan fokus, navigasi menutup menu dan mengembalikan scroll. Perpindahan section tidak mengulang splash.
 - Semua 14 FAQ diuji buka/tutup; state ARIA dan tinggi panel sesuai. Enter/Space dapat membuka/menutup FAQ.
 - Semua tujuan eksternal resmi dipertahankan dengan target tab baru dan noopener; tombol daftar membuka tab baru tanpa mengirim formulir.
 - Tidak ada console error, failed asset response, atau failed request pada run yang berhasil.
-- Screenshot hero setiap breakpoint, splash, menu, kompetisi, footer, reduced motion, serta halaman penuh 390/1440 px dihasilkan dan diperiksa. Artefak dan laporan JSON tersimpan di direktori `results` pada instalasi QA sementara.
+- Screenshot hero setiap breakpoint, splash, menu, kompetisi, footer, reduced motion, serta halaman penuh 390/1440 px dihasilkan dan diperiksa. Screenshot halaman penuh memakai reduced motion sementara agar konten di luar viewport tetap terlihat pada gambar referensi; tes animasi berjalan sebelumnya dalam mode normal. Artefak dan laporan JSON tersimpan di direktori `results` pada instalasi QA sementara.
 
 Ini merupakan pengujian Chromium, bukan pengujian perangkat fisik iPhone/Android atau Safari/WebKit. Core Web Vitals produksi belum diukur.
 

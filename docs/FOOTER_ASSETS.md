@@ -1,11 +1,11 @@
 # Aset footer transparan
 
-File sumber resmi di root tidak ditimpa. `src/assets/unhas.png` tetap memakai alpha asli. Hanya footer menggunakan dua versi turunan berikut:
+File sumber resmi di root tidak ditimpa. `src/assets/unhas.png` tetap memakai alpha asli. Dua versi turunan berikut digunakan untuk branding transparan:
 
 - `src/assets/psq-footer-transparent.webp`: 360 px, sekitar 38 KB.
 - `src/assets/hqf-footer-transparent.webp`: 240 px, sekitar 21 KB.
 
-Penghilangan latar menggunakan tool bawaan imagegen, bukan CLI/API dengan kredensial. Hasil diperiksa sebagai gambar, lalu diperkecil ke WebP memakai Sharp CLI sementara. File hasil ini merupakan turunan visual untuk footer, bukan pengganti file master resmi. Hero, navbar, favicon, dan splash tetap memakai aset sebelumnya.
+Penghilangan latar menggunakan tool bawaan imagegen, bukan CLI/API dengan kredensial. Hasil diperiksa sebagai gambar, lalu diperkecil ke WebP memakai Sharp CLI sementara. File hasil ini merupakan turunan visual, bukan pengganti file master resmi. HQF transparan digunakan di footer, navbar, dan splash agar tidak muncul kotak latar yang berbeda. Hero dan favicon tetap memakai aset sebelumnya. Nama file tetap sama agar referensi aset yang sudah dibuat tidak terputus; tidak ada pembuatan gambar baru dalam penyesuaian ini.
 
 Footer memakai latar hijau muda agar teks hitam pada logo PSQ tetap terbaca tanpa panel putih; backing terang di dalam lambang HQF dipertahankan sebagai bagian logo.
 

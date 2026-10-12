@@ -78,6 +78,10 @@ try {
     { timeout: 1700 },
   );
   await page.screenshot({ path: join(output, "splash-390.png") });
+  assert.match(
+    await page.locator(".intro-logo").getAttribute("src"),
+    /hqf-footer-transparent/,
+  );
   await waitForIntroEnd();
   assert.equal(await page.locator("#hqf-intro").count(), 0);
   report.interactions.push(
@@ -94,11 +98,68 @@ try {
     (await page.locator(".reveal-ready:not(.is-revealed)").count()) > 0,
     "Offscreen reveals should be prepared",
   );
-  await page.locator("#lomba").scrollIntoViewIfNeeded();
+  await page.locator("#competition-list").scrollIntoViewIfNeeded();
   await page.waitForTimeout(750);
   assert.ok((await page.locator(".competition.is-revealed").count()) > 0);
   report.interactions.push(
     "Scroll reveals competition cards on viewport entry",
+  );
+  for (let visit = 0; visit < 2; visit++) {
+    await page.evaluate(() =>
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "instant",
+      }),
+    );
+    await page.waitForFunction(
+      () =>
+        !document
+          .querySelector(".competition")
+          .classList.contains("is-revealed"),
+      null,
+      { timeout: 1500 },
+    );
+    await page.locator("#competition-list").scrollIntoViewIfNeeded();
+    await page.waitForFunction(
+      () =>
+        document
+          .querySelector(".competition")
+          .getAnimations()
+          .some(
+            (animation) =>
+              animation instanceof CSSTransition &&
+              animation.transitionProperty === "opacity" &&
+              animation.playState === "running",
+          ),
+      null,
+      { timeout: 1500 },
+    );
+    await page.waitForTimeout(750);
+    assert.ok(
+      await page
+        .locator(".competition")
+        .first()
+        .evaluate((card) => getComputedStyle(card).opacity === "1"),
+    );
+  }
+  report.interactions.push(
+    "Scroll reveal restarts with a real opacity transition after reaching the footer and returning, twice",
+  );
+  for (const link of await page.locator(".competition-detail").all()) {
+    assert.equal(
+      (await link.locator("span").first().innerText()).trim(),
+      "Lihat ketentuan lomba",
+    );
+  }
+  assert.match(
+    await page.locator(".brand img").getAttribute("src"),
+    /hqf-footer-transparent/,
+  );
+  assert.equal(
+    await page
+      .locator('.footer-logos img[alt="Logo resmi UKM PSQ Unhas"]')
+      .getAttribute("width"),
+    "76",
   );
   await page.getByRole("button", { name: "Cabang lomba berikutnya" }).click();
   await page.waitForTimeout(650);
@@ -250,9 +311,18 @@ try {
         brokenImages: [...document.images]
           .filter((image) => image.complete && image.naturalWidth === 0)
           .map((image) => image.src),
-        hiddenAfterScroll: document.querySelectorAll(
-          ".reveal-ready:not(.is-revealed):not(.competition)",
-        ).length,
+        hiddenVisibleContent: [
+          ...document.querySelectorAll(".reveal-ready:not(.is-revealed)"),
+        ].filter((element) => {
+          const rect = element.getBoundingClientRect();
+          return (
+            rect.bottom > 0 &&
+            rect.top < innerHeight &&
+            rect.right > 0 &&
+            rect.left < innerWidth &&
+            !element.closest(".competition-grid")
+          );
+        }).length,
       };
     });
     assert.ok(
@@ -270,7 +340,7 @@ try {
       `Broken images at ${width}`,
     );
     assert.equal(
-      measurements.hiddenAfterScroll,
+      measurements.hiddenVisibleContent,
       0,
       `Unrevealed content at ${width}`,
     );
@@ -279,11 +349,15 @@ try {
       `Event headline must be visible in the first viewport at ${width}`,
     );
     await page.screenshot({ path: join(output, `hero-${width}.png`) });
-    if (width === 390 || width === 1440)
+    if (width === 390 || width === 1440) {
+      // Full-page reference images must show offscreen content, not conceal it between visits.
+      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.screenshot({
         path: join(output, `page-${width}.png`),
         fullPage: true,
       });
+      await page.emulateMedia({ reducedMotion: "no-preference" });
+    }
     report.breakpoints.push(measurements);
   }
   await page.locator("#lomba").scrollIntoViewIfNeeded();

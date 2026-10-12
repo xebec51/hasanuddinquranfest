@@ -695,16 +695,11 @@ em {
   margin-top: auto;
   padding-top: 18px;
   min-height: 62px;
-  font-size: 13px;
+  font-size: 14px;
+  color: #88672e;
 }
 .competition > p:last-of-type {
   margin-bottom: 24px;
-}
-.competition-detail small {
-  display: block;
-  margin-top: 6px;
-  color: #88672e;
-  font-size: 12px;
 }
 .competition-detail:hover svg {
   transform: translate(2px, -2px);

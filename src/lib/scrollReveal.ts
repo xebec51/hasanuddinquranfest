@@ -1,10 +1,11 @@
 type RevealEnvironment = {
   innerHeight: number;
+  innerWidth?: number;
   IntersectionObserver?: typeof IntersectionObserver;
   matchMedia?: Window["matchMedia"];
 };
 
-/** Progressive enhancement: only offscreen content is prepared for an entrance. */
+/** Repeat on viewport entry; reset outside a buffer, never while content is visible. */
 export function startScrollReveal(
   root: Document = document,
   environment: RevealEnvironment = window,
@@ -15,20 +16,21 @@ export function startScrollReveal(
 
   const elements = [...root.querySelectorAll<HTMLElement>("[data-reveal]")];
   // Read positions in one pass before changing any styles.
-  const offscreen = elements.filter(
-    (element) => element.getBoundingClientRect().top >= environment.innerHeight,
-  );
-  const pending = new Set(offscreen);
+  const positions = elements.map((element) => ({
+    element,
+    rect: element.getBoundingClientRect(),
+  }));
+  const tracked = new Set(elements);
+  let stopped = false;
   let observer: IntersectionObserver | undefined;
   const reveal = (element: HTMLElement) => {
-    if (!pending.delete(element)) return;
+    if (stopped || !tracked.has(element)) return;
     element.classList.add("is-revealed");
-    observer?.unobserve(element);
   };
   const restore = () => {
+    stopped = true;
     observer?.disconnect();
-    pending.clear();
-    for (const element of offscreen) {
+    for (const element of elements) {
       element.classList.remove("reveal-ready", "is-revealed");
     }
   };
@@ -48,14 +50,35 @@ export function startScrollReveal(
   try {
     observer = new Observer(
       (entries) => {
+        if (stopped) return;
         for (const entry of entries) {
-          if (entry.isIntersecting) reveal(entry.target as HTMLElement);
+          const element = entry.target as HTMLElement;
+          if (entry.isIntersecting) {
+            reveal(element);
+            continue;
+          }
+          const rect = entry.boundingClientRect;
+          const outside =
+            rect.bottom <= -32 ||
+            rect.top >= environment.innerHeight + 32 ||
+            rect.right <= 0 ||
+            rect.left >= (environment.innerWidth ?? Infinity);
+          if (outside && !element.contains(root.activeElement)) {
+            element.classList.remove("is-revealed");
+          }
         }
       },
-      { rootMargin: "0px 0px -24px 0px", threshold: 0.04 },
+      { rootMargin: "32px 0px 32px 0px", threshold: 0 },
     );
-    for (const element of offscreen) {
+    for (const { element, rect } of positions) {
       element.classList.add("reveal-ready");
+      if (
+        rect.bottom > 0 &&
+        rect.top < environment.innerHeight &&
+        rect.right > 0 &&
+        rect.left < (environment.innerWidth ?? Infinity)
+      )
+        reveal(element);
       observer.observe(element);
     }
     root.addEventListener("focusin", onFocus);

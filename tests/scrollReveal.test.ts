@@ -13,15 +13,36 @@ function harness({
   const observed = new Set<unknown>();
   const unobserved: unknown[] = [];
   let callback:
-    | ((entries: { target: unknown; isIntersecting: boolean }[]) => void)
+    | ((
+        entries: {
+          target: unknown;
+          isIntersecting: boolean;
+          boundingClientRect: {
+            top: number;
+            bottom: number;
+            left: number;
+            right: number;
+          };
+        }[],
+      ) => void)
     | undefined;
   let disconnected = 0;
+  let activeElement: unknown = null;
   const element = (top: number) => {
     const classes = new Set<string>();
     const result = {
       classes,
+      top,
       parentElement: null,
-      getBoundingClientRect: () => ({ top }),
+      getBoundingClientRect: () => ({
+        top: result.top,
+        bottom: result.top + 120,
+        left: 20,
+        right: 320,
+      }),
+      contains: (target: unknown) =>
+        target === result ||
+        (target as { closest?: () => unknown } | null)?.closest?.() === result,
       classList: {
         add: (...names: string[]) => names.forEach((name) => classes.add(name)),
         remove: (...names: string[]) =>
@@ -60,6 +81,9 @@ function harness({
     }
   }
   const root = {
+    get activeElement() {
+      return activeElement;
+    },
     querySelectorAll: () => [visible, below, later],
     addEventListener: (name: string, listener: (event: Event) => void) =>
       rootListeners.set(name, listener),
@@ -67,6 +91,7 @@ function harness({
   } as unknown as Document;
   const environment = {
     innerHeight: 800,
+    innerWidth: 390,
     IntersectionObserver: missingObserver
       ? undefined
       : (Observer as unknown as typeof IntersectionObserver),
@@ -82,10 +107,21 @@ function harness({
     mediaListeners,
     rootListeners,
     start: () => startScrollReveal(root, environment),
-    intersect: (target: unknown, isIntersecting = true) =>
-      callback?.([{ target, isIntersecting }]),
-    focus: (target: unknown) =>
-      rootListeners.get("focusin")?.({ target } as Event),
+    intersect: (target: ReturnType<typeof element>, isIntersecting = true) =>
+      callback?.([
+        {
+          target,
+          isIntersecting,
+          boundingClientRect: target.getBoundingClientRect(),
+        },
+      ]),
+    focus: (target: unknown) => {
+      activeElement = target;
+      rootListeners.get("focusin")?.({ target } as Event);
+    },
+    blur: () => {
+      activeElement = null;
+    },
     reduce: () => {
       media.matches = true;
       mediaListeners.get("change")?.();
@@ -94,18 +130,48 @@ function harness({
   };
 }
 
-test("only offscreen elements are prepared and each entrance runs once", () => {
+test("initial visible content stays visible and elements remain observed for repeat entrances", () => {
   const page = harness();
   const cleanup = page.start();
-  assert.equal(page.visible.classes.size, 0);
+  assert.ok(page.visible.classes.has("is-revealed"));
   assert.ok(page.below.classes.has("reveal-ready"));
   page.intersect(page.below, false);
   assert.equal(page.below.classes.has("is-revealed"), false);
   page.intersect(page.below);
   page.intersect(page.below);
   assert.ok(page.below.classes.has("is-revealed"));
-  assert.deepEqual(page.unobserved, [page.below]);
+  assert.deepEqual(page.unobserved, []);
+  assert.ok(page.observed.has(page.below));
   assert.ok(page.observed.has(page.later));
+  cleanup();
+});
+
+test("reveal repeats after scrolling past the bottom and returning, in either direction", () => {
+  const page = harness();
+  const cleanup = page.start();
+  for (const outsideTop of [-200, 1000, -200]) {
+    page.below.top = 200;
+    page.intersect(page.below);
+    assert.ok(page.below.classes.has("is-revealed"));
+    page.below.top = outsideTop;
+    page.intersect(page.below, false);
+    assert.equal(page.below.classes.has("is-revealed"), false);
+    page.below.top = 200;
+    page.intersect(page.below);
+    assert.ok(page.below.classes.has("is-revealed"));
+  }
+  cleanup();
+});
+
+test("partially visible content does not reset near a viewport edge", () => {
+  const page = harness();
+  const cleanup = page.start();
+  page.intersect(page.visible);
+  for (const top of [-100, -140, 810]) {
+    page.visible.top = top;
+    page.intersect(page.visible, false);
+    assert.ok(page.visible.classes.has("is-revealed"));
+  }
   cleanup();
 });
 
@@ -125,7 +191,15 @@ test("keyboard focus immediately reveals an offscreen link's container", () => {
   const cleanup = page.start();
   page.focus({ closest: () => page.below });
   assert.ok(page.below.classes.has("is-revealed"));
-  assert.equal(page.observed.has(page.below), false);
+  assert.equal(page.observed.has(page.below), true);
+  page.intersect(page.below, false);
+  assert.ok(
+    page.below.classes.has("is-revealed"),
+    "Focused content must not hide",
+  );
+  page.blur();
+  page.intersect(page.below, false);
+  assert.equal(page.below.classes.has("is-revealed"), false);
   cleanup();
 });
 
@@ -138,6 +212,12 @@ test("changing to reduced motion restores pending content and disconnects", () =
   assert.equal(page.later.classes.size, 0);
   assert.equal(page.observed.size, 0);
   assert.ok(page.disconnected() > 0);
+  page.intersect(page.below);
+  assert.equal(
+    page.below.classes.size,
+    0,
+    "Queued callbacks cannot restart reduced motion",
+  );
   cleanup();
 });
 

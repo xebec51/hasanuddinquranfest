@@ -252,6 +252,10 @@ test("blocked storage cannot strand the intro overlay", () => {
 });
 
 test("the boot fallback retains official information and links", () => {
+  assert.match(
+    html,
+    /class="intro-logo"\s+src="\/src\/assets\/hqf-footer-transparent\.webp"/,
+  );
   assert.match(html, /class="app-fallback"/);
   assert.match(html, /#root:empty\s*\+\s*\.app-fallback/);
   assert.match(html, /https:\/\/forms\.gle\/FnJdV3HPni5MUwqJA/);

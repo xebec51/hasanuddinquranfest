@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { logos } from "../assets/logos";
+import { transparentLogos } from "../assets/logos";
 import { event } from "../data/event";
 import { ExternalLink } from "./UI";
 
@@ -109,7 +109,12 @@ export default function Navbar() {
           aria-label="HQF 2026, kembali ke beranda"
           onClick={() => closeMenu()}
         >
-          <img src={logos.hqf} width="36" height="45" alt="Logo resmi HQF" />
+          <img
+            src={transparentLogos.hqf}
+            width="36"
+            height="45"
+            alt="Logo resmi HQF"
+          />
           <span>
             HQF<span className="brand-year">{event.year}</span>
           </span>

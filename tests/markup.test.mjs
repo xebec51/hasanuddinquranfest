@@ -42,6 +42,24 @@ test("rendered navigation, accordion relationships, and external links stay vali
       /Logo resmi Universitas Hasanuddin|Logo resmi UKM PSQ/,
     );
     assert.match(hero, /Logo resmi Hasanuddin Qur&#x27;an Fest 2026/);
+    const competitionLinks = [
+      ...html.matchAll(
+        /<a[^>]*class="competition-detail"[^>]*>([\s\S]*?)<\/a>/g,
+      ),
+    ];
+    assert.equal(competitionLinks.length, 3);
+    for (const [, link] of competitionLinks) {
+      assert.match(link, /<span>Lihat ketentuan lomba<\/span>/);
+      assert.doesNotMatch(link, /<small>|Qiraat|Pilihan juz|3 orang per regu/);
+    }
+    const navLogo = html.match(/<img[^>]+alt="Logo resmi HQF"[^>]*>/)?.[0];
+    assert.ok(navLogo);
+    assert.match(navLogo, /hqf-footer-transparent/);
+    const psqLogo = html.match(
+      /<img[^>]+alt="Logo resmi UKM PSQ Unhas"[^>]*>/,
+    )?.[0];
+    assert.ok(psqLogo);
+    assert.match(psqLogo, /width="76" height="76"/);
     for (const type of ["heading", "card", "step", "up"]) {
       assert.ok(html.includes(`data-reveal="${type}"`));
     }
